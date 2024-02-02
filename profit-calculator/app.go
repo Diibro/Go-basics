@@ -3,26 +3,28 @@ package main
 import "fmt"
 
 func main() {
-	var (
-		revenue  float64
-		expenses float64
-		taxRate  float64
-	)
 
 	fmt.Println("This is a profit calculator")
-	fmt.Print("Enter the revenue: ")
-	fmt.Scan(&revenue)
-	fmt.Print("Enter the expenses: ")
-	fmt.Scan(&expenses)
-	fmt.Print("Enter the tax rate: ")
-	fmt.Scan(&taxRate)
+	revenue := userInput("Enter the revenue: ")
+	expenses := userInput("Enter the expenses: ")
+	taxRate := userInput("Enter the tax rate: ")
 
+	ebtAmount, profit, ratio := calcEPR(revenue, expenses, taxRate)
+	formattedEV := fmt.Sprintf("The earnings before tax: %v", ebtAmount)
+	fmt.Print(formattedEV)
+	fmt.Println("\nThe Profit made:  ", profit)
+	fmt.Println("The ratio is: ", fmt.Sprintf("%.2f", ratio))
+}
+
+func userInput(text string) (value float64) {
+	fmt.Print(text)
+	fmt.Scan(&value)
+	return
+}
+
+func calcEPR(revenue, expenses, taxRate float64) (float64, float64, float64) {
 	ebtAmount := revenue - expenses
-	profit := ebtAmount - (ebtAmount * taxRate / 100)
+	profit := ebtAmount - (1 - taxRate/100)
 	ratio := ebtAmount / profit
-
-	fmt.Println("The earnings before tax: ", ebtAmount)
-	fmt.Println("The Profit made:  ", profit)
-	fmt.Println("The ratio is: ", ratio)
-
+	return ebtAmount, profit, ratio
 }
