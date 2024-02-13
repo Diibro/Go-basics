@@ -2,36 +2,29 @@ package main
 
 import (
 	"fmt"
-	"time"
-)
 
-type user struct {
-	firstName string
-	lastName  string
-	birthDate string
-	createdAt time.Time
-}
+	"dushime.com/user"
+)
 
 func main() {
 	fmt.Println("Studying about structs")
-	var userData user
 	firstName := getUserData("Enter your first name: ")
 	secondName := getUserData("Enter your last name: ")
 	birthDate := getUserData("Enter your birthDate: ")
 
-	userData = user{
-		firstName: firstName,
-		lastName:  secondName,
-		birthDate: birthDate,
-		createdAt: time.Now(),
+	userData, err := user.NewUser(firstName, secondName, birthDate)
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		userData.ClearName()
+		userData.OutPutInfo()
 	}
 
-	fmt.Println(userData.firstName, " ", userData.lastName, ", ", userData.createdAt)
 }
 
 func getUserData(prompText string) string {
 	fmt.Print(prompText)
 	value := ""
-	fmt.Scan(&value)
+	fmt.Scanln(&value)
 	return value
 }
